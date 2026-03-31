@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPro - Premium Fitness & Wellness</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #2C3E50;
+            --accent: #F39C12;
+            --white: #FFFFFF;
+            --light-bg: #F8F9FA;
+            --dark-text: #2C3E50;
+            --gray: #6C757D;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .logo {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .cta-btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--dark-text);
+        }
+
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .login-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalSlideIn 0.4s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            font-size: 1.8rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .login-close:hover {
+            color: var(--primary);
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+            position: relative;
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 0.8rem 0;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .login-tab.active {
+            color: var(--primary);
+        }
+
+        .login-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-form h3 {
+            margin-bottom: 1.2rem;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .login-forgot {
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .login-forgot a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-forgot a:hover {
+            color: var(--primary);
+        }
+
+        .login-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: clamp(200px, 25vw, 350px);
+            height: clamp(300px, 40vw, 450px);
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            animation: videoFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes videoFloat {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) translateY(-15px) rotate(3deg); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 2rem;
+            max-width: 450px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn-primary, .hero-btn-secondary {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .hero-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-btn-primary:hover, .hero-btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--white), #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 1.5rem;
+            background: var(--light-bg);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .pricing-card.silver {
+            border-color: var(--silver);
+        }
+
+        .pricing-card.gold {
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.premium {
+            border-color: var(--primary);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 2rem;
+            right: -2rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .pricing-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card.silver .pricing-icon { color: var(--silver); }
+        .pricing-card.gold .pricing-icon { color: var(--gold); }
+        .pricing-card.premium .pricing-icon { color: var(--primary); }
+
+        .pricing-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .pricing-price {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price span {
+            font-size: 0.4em;
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            border-bottom: 1px solid #eee;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .pricing-card.gold .pricing-features li i {
+            color: var(--gold);
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .about-features {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .about-feature i {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0
+                    }
+
+        .about-feature h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .about-feature p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Classes Section */
+        .classes {
+            padding: 6rem 1.5rem;
+            background: var(--light-bg);
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+        }
+
+        .class-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 25px 60px rgba(255,107,53,0.2);
+        }
+
+        .class-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .class-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .class-card p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        /* Reviews Section */
+        .reviews {
+            padding: 6rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .review-stars {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .review-author {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item i {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        }
+
+        .contact-form h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contact-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255,107,53,0.4);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 53, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 1.5rem 1.5rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .footer-section p {
+            margin-bottom: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .stats {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .cta-buttons {
+                display: none;
+            }
+
+            .hero-video {
+                width: 250px;
+                height: 350px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 3rem 1rem;
+                gap: 1rem;
+            }
+
+            .pricing-grid, .classes-grid, .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.gold {
+                transform: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .pricing-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero-video {
+                width: 200px;
+                height: 280px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .stats .stat-item {
+                margin-bottom: 1rem;
+            }
+
+            .pricing-badge {
+                font-size: 0.7rem;
+                padding: 0.4rem 2.5rem;
+            }
+        }
+
+        /* Ripple Animation */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <div class="login-close" id="loginClose">&times;</div>
+            <div class="login-tabs">
+                <div class="login-tab active" data-tab="login">Login</div>
+                <div class="login-tab" data-tab="signup">Sign Up</div>
+            </div>
+            
+            <!-- Login Form -->
+            <div class="login-form active" id="loginForm">
+                <h3>Welcome Back</h3>
+                <form>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <div class="login-forgot">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="login-submit">Login</button>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="login-form" id="signupForm">
+                <h3>Create Account</h3>
+                <form>
+                    <div class="form-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Phone Number" required>
+                    </div>
+                    <button type="submit" class="login-submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">FitPro</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#classes">Classes</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn" id="loginBtn">Login</a>
+                <a href="#" class="cta-btn cta-btn-outline">Get Started</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Transform Your Body<br>Transform Your Life</h1>
+                <p>Join 100K+ fitness enthusiasts achieving real results with our premium workout programs and expert guidance.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="hero-btn-primary">
+                        <i class="fas fa-play"></i> Start Free Trial
+                    </a>
+                    <a href="#pricing" class="hero-btn-secondary">
+                        <i class="fas fa-tags"></i> View Pricing
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div style="font-size: 3rem; color: rgba(255,255,255,0.3);">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats animate-on-scroll">
+        <div class="stat-item">
+            <h3>100K+</h3>
+            <p>Active Members</p>
+        </div>
+        <div class="stat-item">
+            <h3>200+</h3>
+            <p>Locations</p>
+        </div>
+        <div class="stat-item">
+            <h3>50+</h3>
+            <p>Expert Trainers</p>
+        </div>
+        <div class="stat-item">
+            <h3>98%</h3>
+            <p>Success Rate</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="section-header animate-on-scroll">
+            <h2>Choose Your Perfect Plan</h2>
+            <p>Select from our flexible membership options designed for every fitness level and budget</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card silver animate-on-scroll">
+                <div class="pricing-badge">MOST POPULAR</div>
+                <div class="pricing-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3 class="pricing-title">Silver</h3>
+                <div class="pricing-price">₹999<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Unlimited Gym Access</li>
+                    <li><i class="fas fa-check"></i> Group Classes (5/week)</li>
+                    <li><i class="fas fa-check"></i> Free Parking</li>
+                    <li><i class="fas fa-check"></i> Locker Access</li>
+                    <li><i class="fas fa-times"></i> Personal Training</li>
+                    <li><i class="fas fa-times"></i> Nutrition Plans</li>
+                </ul>
+                <button class="pricing-btn">Choose Silver</button>
+            </div>
+
+            <div class="pricing-card gold animate-on-scroll">
+                <div class="pricing-badge" style="background: var(--gold); color: #333;">BEST VALUE</div>
+                <div class="pricing-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3 class="pricing-title">Gold</h3>
+                <div class="pricing-price">₹1,499<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Everything in Silver</li>
+                    <li><i class="fas fa-check"></i> Unlimited Group Classes</li>
+                    <li><i class="fas fa-check"></i> 4 Personal Sessions/month</li>
+                    <li><i class="fas fa-check"></i> Sauna & Steam</li>
+                                        <li><i class="fas fa-check"></i> Priority Booking</li>
+                    <li><i class="fas fa-times"></i> Custom Nutrition</li>
+                </ul>
+                <button class="pricing-btn">Choose Gold</button>
+            </div>
+
+            <div class="pricing-card premium animate-on-scroll">
+                <div class="pricing-badge">PREMIUM</div>
+                <div class="pricing-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3 class="pricing-title">Premium</h3>
+                <div class="pricing-price">₹2,499<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Everything in Gold</li>
+                    <li><i class="fas fa-check"></i> Unlimited Personal Training</li>
+                    <li><i class="fas fa-check"></i> Custom Nutrition Plan</li>
+                    <li><i class="fas fa-check"></i> Monthly Body Analysis</li>
+                    <li><i class="fas fa-check"></i> Dedicated Trainer</li>
+                    <li><i class="fas fa-check"></i> VIP Lounge Access</li>
+                </ul>
+                <button class="pricing-btn">Choose Premium</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="section-header animate-on-scroll">
+            <h2>Our Story</h2>
+            <p>Founded with a passion for holistic wellness, FitPro has been transforming lives for over a decade</p>
+        </div>
+        <div class="about-grid animate-on-scroll">
+            <div class="about-text">
+                <h2>Why Choose FitPro?</h2>
+                <p>We believe in holistic wellness that nurtures body, mind, and spirit. Our state-of-the-art facilities combined with expert guidance ensure you achieve sustainable results.</p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <i class="fas fa-heartbeat"></i>
+                        <div>
+                            <h4>Holistic Wellness</h4>
+                            <p>Complete fitness programs addressing physical, mental & nutritional health</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-video"></i>
+                        <div>
+                            <h4>Live Streaming</h4>
+                            <p>Access live classes from anywhere with our premium streaming platform</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h4>Expert Community</h4>
+                            <p>Join thousands of motivated members on their fitness journey</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="classes">
+        <div class="section-header animate-on-scroll">
+            <h2>Popular Classes</h2>
+            <p>Choose from our diverse class offerings designed for every fitness level</p>
+        </div>
+        <div class="classes-grid">
+            <div class="class-card animate-on-scroll">
+                <div class="class-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3>Strength Training</h3>
+                <p>Build muscle and strength with our progressive resistance training programs led by certified trainers</p>
+            </div>
+            <div class="class-card animate-on-scroll">
+                <div class="class-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3>HIIT</h3>
+                <p>High-Intensity Interval Training for maximum fat burn and cardiovascular fitness in minimum time</p>
+            </div>
+            <div class="class-card animate-on-scroll">
+                <div class="class-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Cardio</h3>
+                <p>Fun and energetic cardio sessions to boost endurance and burn calories effectively</p>
+            </div>
+            <div class="class-card animate-on-scroll">
+                <div class="class-icon">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <h3>Yoga Flow</h3>
+                <p>Dynamic yoga sequences for flexibility, balance, and inner peace</p>
+            </div>
+            <div class="class-card animate-on-scroll">
+                <div class="class-icon">
+                    <i class="fas fa-bicycle"></i>
+                </div>
+                <h3>Cycling</h3>
+                <p>High-energy indoor cycling classes with motivating music and coaching</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header animate-on-scroll">
+            <h2>Premium Features</h2>
+            <p>World-class facilities with certified trainers and cutting-edge technology</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Expert Trainers</h3>
+                <p>Certified professionals create personalized programs for your goals</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Smart App</h3>
+                <p>Track progress, book classes, access workouts anywhere</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Proven Results</h3>
+                <p>98% member satisfaction with science-backed training</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews">
+        <div class="section-header animate-on-scroll" style="color: white;">
+            <h2>What Our Members Say</h2>
+            <p>Real results from real people</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card animate-on-scroll">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <div class="review-text">"Transformed my body in 3 months! The trainers are amazing and the classes are so motivating."</div>
+                <div class="review-author">- Priya Sharma</div>
+            </div>
+            <div class="review-card animate-on-scroll">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <div class="review-text">"Best gym I've ever joined. The app makes tracking progress so easy and convenient."</div>
+                <div class="review-author">- Rohan Patel</div>
+            </div>
+            <div class="review-card animate-on-scroll">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <div class="review-text">"The yoga flow classes have changed my life. Perfect balance of challenge and relaxation."</div>
+                <div class="review-author">- Anjali Mehta</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="section-header animate-on-scroll">
+            <h2>Get In Touch</h2>
+            <p>Ready to start your fitness journey? Contact us today</p>
+        </div>
+        <div class="contact-grid animate-on-scroll">
+            <div class="contact-info">
+                <h3>Visit Us</h3>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Multiple Locations</h4>
+                        <p>Mumbai, Delhi, Bangalore & 200+ cities</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Call Us</h4>
+                        <p>+91 98765 43210</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>hello@fitpro.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>Hours</h4>
+                        <p>5AM - 11PM Daily</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Send Message</h3>
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="contact-submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="animate-on-scroll" style="padding: 6rem 1.5rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); text-align: center; color: white;">
+        <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 1rem;">Ready to Transform?</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem;">Join thousands achieving their fitness goals</p>
+        <a href="#pricing" class="hero-btn-primary" style="background: white; color: var(--primary); font-size: 1.1rem; padding: 18px 45px; display: inline-block;">Start 7-Day Free Trial</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>FitPro</h3>
+                <p>Premium fitness partner for a healthier tomorrow. World-class training for body & mind.</p>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <a href="#"><i class="fab fa-facebook-f" style="font-size: 1.5rem;"></i></a>
+                    <a href="#"><i class="fab fa-instagram" style="font-size: 1.5rem;"></i></a>
+                    <a href="#"><i class="fab fa-twitter" style="font-size: 1.5rem;"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About</a>
+                <a href="#classes">Classes</a>
+            </div>
+            <div class="footer-section">
+                <h3>Membership</h3>
+                <a href="#">Silver</a>
+                <a href="#">Gold</a>
+                <a href="#">Premium</a>
+                <a href="#">Free Trial</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="#">Help Center</a>
+                <a href="#contact">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 FitPro. All rights reserved. | Made by Naman Infotech</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (mobileMenu && navMenu) {
+            mobileMenu.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                if (navMenu.classList.contains('active')) {
+                    navMenu.style.display = 'flex';
+                    navMenu.style.flexDirection = 'column';
+                    navMenu.style.position = 'fixed';
+                    navMenu.style.background = 'rgba(255,255,255,0.98)';
+                    navMenu.style.top = '80px';
+                    navMenu.style.left = '0';
+                    navMenu.style.width = '100%';
+                    navMenu.style.padding = '2rem';
+                    navMenu.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                    navMenu.style.zIndex = '999';
+                } else {
+                    navMenu.style.display = 'none';
+                }
+            });
+        }
+
+        // Login Modal
+        const loginModal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginClose = document.getElementById('loginClose');
+
+        if (loginBtn) {
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (loginModal) {
+                    loginModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        }
+
+        if (loginClose && loginModal) {
+            loginClose.addEventListener('click', () => {
+                loginModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+
+            loginModal.addEventListener('click', (e) => {
+                if (e.target === loginModal) {
+                    loginModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Login Tabs
+        const loginTabs = document.querySelectorAll('.login-tab');
+        const loginForms = document.querySelectorAll('.login-form');
+
+        loginTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                
+                loginTabs.forEach(t => t.classList.remove('active'));
+                loginForms.forEach(f => f.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(target + 'Form').classList.add('active');
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                if (navMenu && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    navMenu.style.display = 'none';
+                }
+            });
+        });
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (header && window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else if (header) {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Scroll Animations
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter Animation for Stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-item h3');
+            counters.forEach(counter => {
+                const targetText = counter.textContent;
+                const target = parseInt(targetText.replace(/[^\d]/g, ''));
+                const increment = target / 100;
+                let current = 0;
+                const suffix = targetText.replace(/[\d]/g, '');
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.floor(current) + suffix;
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = targetText;
+                    }
+                };
+                
+                if (!counter.classList.contains('counted')) {
+                    updateCounter();
+                    counter.classList.add('counted');
+                }
+            });
+        }
+
+        let countersAnimated = false;
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200 && !countersAnimated) {
+                animateCounters();
+                countersAnimated = true;
+            }
+        });
+
+        // Pricing Card Interactions
+        document.querySelectorAll('.pricing-card').forEach((card) => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const isGold = this.classList.contains('gold');
+                this.style.transform = isGold ? 'scale(1.05)' : 'translateY(0) scale(1)';
+            });
+
+            const btn = card.querySelector('.pricing-btn');
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    const plan = card.querySelector('.pricing-title').textContent;
+                    alert(`Great choice! You've selected the ${plan} plan
+                    . Redirecting to checkout...`);
+                });
+            }
+        });
+
+        // Form Submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Thank you! Your submission was successful.');
+                if (form.closest('.login-modal')) {
+                    if (loginModal) {
+                        loginModal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+                form.reset();
+            });
+        });
+
+        // Video Optimization for Mobile
+        const heroVideo = document.querySelector('.hero-video');
+        if (heroVideo) {
+            if (window.innerWidth < 768) {
+                heroVideo.playbackRate = 0.8;
+            }
+            
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        heroVideo.play();
+                    } else {
+                        heroVideo.pause();
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            videoObserver.observe(heroVideo);
+        }
+
+        // Button Ripple Effect
+        document.querySelectorAll('.cta-btn, .hero-btn-primary, .hero-btn-secondary, .pricing-btn, .login-submit, .contact-submit').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255,255,255,0.6);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    if (ripple.parentNode) {
+                        ripple.remove();
+                    }
+                }, 600);
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (mobileMenu && navMenu && !mobileMenu.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navMenu.style.display = 'none';
+            }
+        });
+
+        console.log('FitPro website loaded successfully! 🚀');
+    </script>
+</body>
+</html>
+
+                
